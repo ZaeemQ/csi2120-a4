@@ -1,4 +1,3 @@
-import javax.json.JsonNumber;
 import java.util.LinkedList;
 
 public class Pool {
@@ -6,7 +5,7 @@ public class Pool {
 
     String name;
     int parkId;
-    double lat, lon, distance;
+    double lat, lon, distance=0;
     Pool parent;
     LinkedList<Pool> childrenList = new LinkedList<Pool>();
 
@@ -60,6 +59,14 @@ public class Pool {
 
     public void setChild (Pool pool){childrenList.add(pool);}
 
-    public Pool [] getChildren {return childrenList.toArray();}
+    public Pool [] getChildren () {
+        Pool [] children = new Pool [childrenList.size()];
+
+        for (int i = 0; i < children.length; i++){
+            children[i]=childrenList.get(i);
+        }
+        return children;
+
+    }
 
 }
