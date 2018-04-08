@@ -33,7 +33,6 @@ public class Preprocess {
         //for loop to read the Json in to array of Pool object called pools
         for (int i = 0; i < numPools; i++) {
             pools[i] = new Pool();
-            pools[i].setId(poolArray.getJsonObject(i).getJsonObject("properties").getInt("PARK_ID"));
             pools[i].setName(poolArray.getJsonObject(i).getJsonObject("properties").getString("PARKNAME"));
             pools[i].setLon(Double.parseDouble(String.valueOf(poolArray.getJsonObject(i).getJsonObject("geometry").getJsonArray("coordinates").getJsonNumber(0))));
             pools[i].setLat(Double.parseDouble(String.valueOf(poolArray.getJsonObject(i).getJsonObject("geometry").getJsonArray("coordinates").getJsonNumber(1))));
@@ -77,17 +76,26 @@ public class Preprocess {
             index=0;
         }
 
-        preorder (tree.peekFirst());
+        BufferedWriter writer = new BufferedWriter(new FileWriter("solution.txt"));
+        try {
+            preorder (tree.peekFirst(), writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }//main
 
-    public static void preorder (Pool root){
+    public static void preorder (Pool root, BufferedWriter writer) throws IOException {
         System.out.println (root.getName() + "  " + root.getDistance());
+        writer.write(root.getName() + " " + root.getDistance());
+        writer.newLine();
+
         Pool [] kids = root.getChildren();
 
         if (kids.length > 0) {
             for (int i = 0; i < root.getChildren().length; i++) {
-            preorder(kids[i]);
+            preorder(kids[i], writer);
             }
         }
     }
