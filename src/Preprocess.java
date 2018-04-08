@@ -46,85 +46,61 @@ public class Preprocess {
             }
         }//end for loop
 
-        /*creates binary tree, with left child being the next southern pool
-        and right child being the next pool if its north
-        */
-        for (int i=0;i<numPools-1;i++){
 
-            if (pools[i+1].getLat() > pools[i].getLat()){
-                pools[i].setRightChild(pools[i + 1]);
-            }
-            else {
-                pools[i].setLeftChild(pools[i + 1]);
-            }
+        double closest =999, distance;//initialize as big number
+        int whichPool; //index number to track which pool it was
+        for (int i=0; i<numPools; i++) {
+            distance = calcDistance(pools[0], pools[i];
 
-            pools[i+1].setParentPool(pools[i]);
+            if () distance < closest) {
+                closest = distance;
+                whichPool = i;
+            }
+        }
+
+        //set closest pool as the child of the root
+        pools[0].setChild(pools[whichPool]);
+        pools[whichPool].setLat(999999);//set lattitude as very high so that its distance is never considered again
+
+    }//main
+
+    public static void createTree (Pool root, Pool [] pools){
+        Pool [] children = new Pool[root.getChildren.length];
+        children = root.getChildren();//gets all the children of the root node
+        double closest = 999, distance;
+        int whichPool, whichChild;
+
+        //finds the two closest children and pool
+        for (int i=0; i<children.length; i++){
+            for (int j = 0; j < pools.length; j++){
+
+                distance = calcDistance(pools[0], pools[i];
+
+                if () distance < closest) {
+                    closest = distance;
+                    whichChild = i;
+                    whichPool = j;
+                }
+            }
         }
 
 
+    }//end createTree
 
-        //calculate euclidian distance
+    public static double calcDistance (Pool poolOne, Pool poolTwo){
+
+        //calculate euclidian distance between two pools
         //declare vars
         double latOne, latTwo, lonOne, lonTwo ,dRad, distance, ratio = (3.14/180);
-        pools[0].setDistance(0);
-        for (int i=0; i<numPools-1; i++){
-            latOne = pools[i].getLat();
-            lonOne = pools[i].getLon();
-            latTwo = pools[i+1].getLat();
-            lonTwo = pools[i+1].getLon();
-            latOne = latOne * ratio;//convert to radians
-            lonOne = lonOne* ratio;//convert to radians
-            latTwo = latTwo * ratio;//convert to radians
-            lonTwo = lonTwo* ratio;//convert to radians
+
+            latOne = ratio *(poolOne.getLat());
+            lonOne = ratio *(poolOne.getLon());
+            latTwo = ratio *(poolTwo.getLat());
+            lonTwo = ratio* (poolTwo.getLon());
 
             //formula
             dRad = 2*Math.asin(Math.sqrt(Math.pow(Math.sin((latOne - latTwo)/2),2)+(Math.cos(latOne)*Math.cos(latTwo)*Math.pow(Math.sin((lonOne-lonTwo)/2),2))));
             distance = 6371*dRad;
-            distance = distance + pools[i].getDistance();
-            //System.out.printf("%-5f \t %-5f \t %-5f \t %-5f \t %-5f \t %-5f \n", latOne, lonOne, latTwo, lonTwo, dRad, distance);
-            pools[i+1].setDistance(distance);
-        }
-
-        //call print in preorder and pass in root pool
-        BufferedWriter writer = new BufferedWriter(new FileWriter("solution.txt"));
-        try {
-            printPreorder (pools[0], writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        //test printing
-
-        /*
-        for (int i=0;i<numPools;i++) {
-            System.out.print(pools[i].getName());
-            System.out.printf("%-1s %-10.2f \n"," " ,pools[i].getDistance());
-        }*/
-
-
-    }//main
-
-    public static void printPreorder(Pool pool, BufferedWriter writer) throws IOException {
-        if (pool == null)
-            return;
-
-
-        writer.write(pool.getName() + " " + pool.getDistance());
-        writer.newLine();
-
-
-
-        //print pool in ordered way
-        System.out.printf("%-50s %-10d %-10f \t %-10f \t %-10f \n",pool.getName(), pool.getId(), pool.getLat(),pool.getLon(), pool.getDistance());
-
-        //left tree
-        printPreorder(pool.getLeftChild(), writer);
-
-        //right tree
-        printPreorder(pool.getRightChild(), writer);
-
-        writer.close();
-
-    }//printPreorder
+            return distance;
+    }
 }//class

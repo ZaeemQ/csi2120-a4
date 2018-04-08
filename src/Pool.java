@@ -8,8 +8,7 @@ public class Pool {
     int parkId;
     double lat, lon, distance;
     Pool parent;
-    Pool leftChild;
-    Pool rightChild;
+    LinkedList<Pool> childrenList = new LinkedList<Pool>();
 
     public void setName (String name){
         this.name = name;
@@ -43,22 +42,6 @@ public class Pool {
         return lon;
     }
 
-    public void setLeftChild(Pool child){
-        leftChild = child;
-    }
-
-    public Pool getLeftChild(){
-        return leftChild;
-    }
-
-    public void setRightChild(Pool child){
-        rightChild = child;
-    }
-
-    public Pool getRightChild(){
-        return rightChild;
-    }
-
     public void setParentPool(Pool parent){
         this.parent = parent;
     }
@@ -74,5 +57,9 @@ public class Pool {
     public double getDistance(){
         return distance;
     }
+
+    public void setChild (Pool pool){childrenList.add(pool);}
+
+    public Pool [] getChildren {return childrenList.toArray();}
 
 }
